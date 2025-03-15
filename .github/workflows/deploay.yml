@@ -27,7 +27,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Eureka 서버 빌드
-        run: ./gradlew :com.devsquad10.eureka:build
+        run: ./gradlew :com.devsquad10.eureka:build --spring.profiles.active=ci
 
       - name: Eureka 서버 실행
         run: |
