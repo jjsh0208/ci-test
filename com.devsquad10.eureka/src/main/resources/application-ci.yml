@@ -23,5 +23,7 @@ eureka:
     fetch-registry: false
     service-url:
       defaultZone: http://localhost:19090/eureka/
+  server:
+    enable-self-preservation: false
 server:
   port: 19090
