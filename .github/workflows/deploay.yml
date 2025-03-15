@@ -26,8 +26,11 @@ jobs:
       - name: Gradle 실행 권한 부여
         run: chmod +x ./gradlew
 
+          # `application-ci.yml` 로딩
       - name: Eureka 서버 빌드
-        run: ./gradlew :com.devsquad10.eureka:build --no-daemon -Dspring.config.location=classpath:/application-ci.yml
+        run: ./gradlew :com.devsquad10.eureka:build --no-daemon -Dspring.config.location=classpath:/application-ci.yml -Dspring.profiles.active=ci
+#      - name: Eureka 서버 빌드
+#        run: ./gradlew :com.devsquad10.eureka:build --no-daemon -Dspring.config.location=classpath:/application-ci.yml
 
 #      - name: Eureka 서버 실행 체크
 #        run: |

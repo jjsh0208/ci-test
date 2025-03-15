@@ -2,6 +2,8 @@ spring:
   application:
     name: eureka
 
+  profiles:
+    active: ci
 
   datasource:
     driver-class-name: org.h2.Driver
@@ -15,8 +17,7 @@ spring:
     show-sql: true
 
 eureka:
-  instance:
-    hostname: localhost
+
   client:
     register-with-eureka: false
     fetch-registry: false
