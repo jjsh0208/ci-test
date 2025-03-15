@@ -242,5 +242,4 @@ gradle-app.setting
 *.hprof
 
 # Exclude application.yml and .env in all directories
-**/application.yml
 **/.env
