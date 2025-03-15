@@ -1,0 +1,93 @@
+name: Multi-Module CI
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+  pull_request:
+    branches:
+      - master
+      - develop
+
+jobs:
+  eureka:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 소스 코드 체크아웃
+        uses: actions/checkout@v4
+
+      - name: JDK 17 설정
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Gradle 실행 권한 부여
+        run: chmod +x ./gradlew
+
+      - name: Eureka 서버 빌드
+        run: ./gradlew :com.devsquad10.eureka:build --no-daemon -Dspring.config.location=classpath:/application-ci.yml
+
+#      - name: Eureka 서버 백그라운드 실행
+#        run: |
+#          nohup java -jar com.devsquad10.eureka/build/libs/*.jar --spring.config.location=classpath:/application-ci.yml &
+#          sleep 20 # Eureka 서버가 시작될 때까지 잠시 대기 (시간 조정 가능)
+
+  services:
+    runs-on: ubuntu-latest
+    needs: eureka  # Eureka가 실행된 후 실행
+    strategy:
+      matrix:
+        module:
+          - com.devsquad10.common
+          - com.devsquad10.company
+          - com.devsquad10.hub
+          - com.devsquad10.message
+          - com.devsquad10.order
+          - com.devsquad10.product
+          - com.devsquad10.shipping
+          - com.devsquad10.user
+      fail-fast: false
+      max-parallel: 5
+
+    steps:
+      - name: 소스 코드 체크아웃
+        uses: actions/checkout@v4
+
+      - name: JDK 17 설정
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Gradle 실행 권한 부여
+        run: chmod +x ./gradlew
+
+      - name: Gradle 빌드 (서비스 모듈)
+        run: ./gradlew :${{ matrix.module }}:build --parallel --no-daemon
+
+      - name: Gradle 테스트 실행 (서비스 모듈)
+        run: ./gradlew :${{ matrix.module }}:test -Dspring.config.location=classpath:/application-ci.yml --no-daemon
+
+  gateway:
+    runs-on: ubuntu-latest
+    needs: services  # 모든 서비스 모듈이 빌드된 후 실행
+    steps:
+      - name: 소스 코드 체크아웃
+        uses: actions/checkout@v4
+
+      - name: JDK 17 설정
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Gradle 실행 권한 부여
+        run: chmod +x ./gradlew
+
+      - name: Gradle 빌드 (Gateway)
+        run: ./gradlew :com.devsquad10.gateway:build --no-daemon
+
+      - name: Gradle 테스트 실행 (Gateway)
+        run: ./gradlew :com.devsquad10.gateway:test -Dspring.config.location=classpath:/application-ci.yml --no-daemon

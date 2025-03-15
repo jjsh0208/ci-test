@@ -244,4 +244,3 @@ gradle-app.setting
 # Exclude application.yml and .env in all directories
 **/application.yml
 **/.env
-**/deploay.yml
