@@ -29,15 +29,15 @@ jobs:
       - name: Eureka 서버 빌드
         run: ./gradlew :com.devsquad10.eureka:build --no-daemon -Dspring.config.location=classpath:/application-ci.yml
 
-      - name: Eureka 서버 실행 체크
-        run: |
-          if curl --silent --fail http://localhost:8761/eureka/; then
-            echo "Eureka 서버가 이미 실행 중입니다."
-          else
-            echo "Eureka 서버가 실행되지 않았으므로 시작합니다."
-            nohup java -jar com.devsquad10.eureka/build/libs/*.jar --spring.config.location=classpath:/application-ci.yml & 
-            sleep 20 # Eureka 서버가 시작될 때까지 잠시 대기 (시간 조정 가능)
-          fi
+#      - name: Eureka 서버 실행 체크
+#        run: |
+#          if curl --silent --fail http://localhost:8761/eureka/; then
+#            echo "Eureka 서버가 이미 실행 중입니다."
+#          else
+#            echo "Eureka 서버가 실행되지 않았으므로 시작합니다."
+#            nohup java -jar com.devsquad10.eureka/build/libs/*.jar --spring.config.location=classpath:/application-ci.yml &
+#            sleep 20 # Eureka 서버가 시작될 때까지 잠시 대기 (시간 조정 가능)
+#          fi
 
   services:
     runs-on: ubuntu-latest
