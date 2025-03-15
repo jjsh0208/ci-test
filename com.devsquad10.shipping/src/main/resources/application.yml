@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: shipping
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:19090/eureka/  # Eureka 서버의 URL을 지정
+
+server:
+  port: 19098

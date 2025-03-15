@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: product
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/b2b
+    username: devsquad10
+    password: devsquad10
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:19090/eureka/  # Eureka 서버의 URL을 지정
+
+server:
+  port: 19097
