@@ -7,7 +7,7 @@ services:
     container_name: eureka
 
     ports:
-      - "${SERVER_PORT}:8080"
+      - "19090:8080"
     networks:
       - b2b-network
 
